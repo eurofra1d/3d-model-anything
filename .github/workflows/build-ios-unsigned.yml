@@ -14,6 +14,7 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
           xcodebuild -version
+          xcodebuild -downloadPlatform iOS
           brew install xcodegen
       - name: Generate project
         working-directory: apps/house-capture
