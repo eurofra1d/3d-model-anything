@@ -6,15 +6,13 @@ on:
       - '.github/workflows/build-ios-unsigned.yml'
 jobs:
   build:
-    runs-on: macos-26
+    runs-on: macos-15
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode and install XcodeGen
         run: |
-          sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
           xcodebuild -version
-          xcodebuild -downloadPlatform iOS
           brew install xcodegen
       - name: Generate project
         working-directory: apps/house-capture
