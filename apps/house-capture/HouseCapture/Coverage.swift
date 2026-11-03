@@ -62,8 +62,16 @@ struct Coverage {
       let corners = [c - x - z, c + x - z, c + x + z, c - x + z].map { SIMD2($0.x, $0.z) }
       return Box(corners: corners, covered: photos.contains { $0.sees(c, surfaceNormal: nil) }, label: "\(obj.category)")
     }
-    gaps = (room.doors + room.openings).map { Gap(a: Self.endpoints($0).0, b: Self.endpoints($0).1, isWindow: false) }
-      + room.windows.map { Gap(a: Self.endpoints($0).0, b: Self.endpoints($0).1, isWindow: true) }
+    let doorsAndOpenings: [CapturedRoom.Surface] = room.doors + room.openings
+    let doorwayGaps: [Gap] = doorsAndOpenings.map { surface in
+      let (a, b) = Self.endpoints(surface)
+      return Gap(a: a, b: b, isWindow: false)
+    }
+    let windowGaps: [Gap] = room.windows.map { surface in
+      let (a, b) = Self.endpoints(surface)
+      return Gap(a: a, b: b, isWindow: true)
+    }
+    gaps = doorwayGaps + windowGaps
   }
 
   static func endpoints(_ s: CapturedRoom.Surface) -> (SIMD2<Float>, SIMD2<Float>) {
