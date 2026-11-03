@@ -815,14 +815,10 @@ struct PreviewSceneView: UIViewRepresentable {
 }
 
 extension View {
-  /// Liquid Glass on iOS 26+, a material before that
-  @ViewBuilder func glass<S: Shape>(_ shape: S, interactive: Bool = false) -> some View {
-    if #available(iOS 26.0, *) {
-      self.glassEffect(interactive ? .regular.interactive() : .regular, in: shape)
-    } else {
-      self.background(.ultraThinMaterial, in: shape)
-        .overlay(shape.stroke(Color.white.opacity(0.12), lineWidth: 0.5))
-    }
+  /// Compatible translucent styling for the iOS 17+ capture build.
+  func glass<S: Shape>(_ shape: S, interactive: Bool = false) -> some View {
+    self.background(.ultraThinMaterial, in: shape)
+      .overlay(shape.stroke(Color.white.opacity(0.12), lineWidth: 0.5))
   }
 }
 
